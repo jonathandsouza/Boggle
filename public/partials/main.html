@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-xs-6 col-md-4">
+
+        <div>
+            <button>Challenge</button>
+        </div>
+        <div>
+            <table class="table table-striped">
+
+                <tr ng-repeat="user in users">
+                    <td>
+                        <input type="radio" name='userSelectionRadio' ng-model="user.selected">
+                    </td>
+                    <td>
+                        {{user.username}}
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+    </div>
+    <div class="col-xs-6 col-md-4"></div>
+    <div class="col-xs-6 col-md-4"></div>
+</div>

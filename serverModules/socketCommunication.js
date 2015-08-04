@@ -158,8 +158,12 @@ module.exports = function (io) {
                 username: data.username
             });
 
-            socket.emit('active user list', objSocketManager.getUserList);
 
+
+        });
+
+        socket.on('get active user list', function (data) {
+            socket.emit('active user list', objSocketManager.getUserList);
         });
 
     });

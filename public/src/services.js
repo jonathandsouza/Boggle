@@ -1,26 +1,46 @@
 var app = angular.module('BoggleApplication')
 
-app.factory('socket', function ($rootScope) {
-    var socket = io.connect();
+app.factory('Communication', function ($rootScope) {
+    var socket;
+
     return {
-        on: function (eventName, callback) {
-            socket.on(eventName, function () {
-                var args = arguments;
-                $rootScope.$apply(function () {
-                    callback.apply(socket, args);
-                });
-            });
-        },
-        emit: function (eventName, data, callback) {
-            socket.emit(eventName, data, function () {
-                var args = arguments;
-                $rootScope.$apply(function () {
-                    if (callback) {
-                        callback.apply(socket, args);
-                    }
-                });
-            })
+        getSocket: function () {
+
+            if (socket)
+                return socket;
+            else {
+                socket = io.connect();
+                return socket;
+            }
+
         }
-    };
+    }
+
+
+});
+
+app.factory('userService', function () {
+
+    var username = '',
+        key = '',
+        isValid = false;
+
+    return {
+
+        setCredentialsAndVerify: function (vUsername, vKey) {
+            username = vUsername;
+            key = vKey;
+            isValid = true;
+            return true; //emp code;
+        },
+
+        getUsername: function () {
+            return username;
+        },
+        isUserValidated: function () {
+            return isValid;
+        }
+
+    }
 
 });

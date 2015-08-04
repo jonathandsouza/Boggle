@@ -1,53 +1,26 @@
  angular
-     .module('BoggleApplication', [])
-     .controller('RootController', function ($scope) {
+     .module('BoggleApplication', ['ngRoute'])
+     .config(function ($routeProvider, $locationProvider) {
 
-     })
-     .controller('AppWinController', function ($scope) {
+         $routeProvider
+             .when('/login', {
+                 templateUrl: 'partials/login.html',
+                 controller: 'loginController'
+             })
+             .when('/home', {
 
-         var socket = io();
-
-         $scope.users = [];
-
-         $scope.operationsTest = function () {
-
-             console.log('attempting to communicate...');
-
-             socket.emit('identify', {
-                 username: $scope.username
-             });
-
-             socket.on('user joined', function (data) {
-
-                 console.log('user joined', data.username);
-
-                 $scope.users.push({
-                     username: data.username,
-                     selected: false
-                 });
-                 console.log('user added :' + data.username);
-                 $scope.$apply();
-                 console.log(users);
+                 templateUrl: 'partials/main.html',
+                 controller: 'AppWinController'
+             })
+             .otherwise({
+                 redirectTo: '/login'
              });
 
 
-             socket.on('active user list', function (data) {
+         $locationProvider.hashPrefix('!');
 
-                 $scope.users = [];
-
-                 if (data) {
-                     data.forEach(function (el) {
-                         $scope.users.push({
-                             username: el.username,
-                             selected: false
-                         })
-                     });
-
-                     $scope.$apply();
-                 }
-             });
-
-         }
-
-
+         $locationProvider.html5Mode({
+             enabled: false,
+             requireBase: false
+         });
      });
