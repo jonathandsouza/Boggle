@@ -166,5 +166,27 @@ module.exports = function (io) {
             socket.emit('active user list', objSocketManager.getUserList);
         });
 
+        socket.on('challenge', function (data) {
+
+            if (data && data.challenger && data.challenged) {
+
+
+                var userSocketInfo = objSocketManager.getSocketIDByUserName(data.challenged)
+
+                if (userSocketInfo && userSocketInfo.socketId) {
+
+                    io.sockets.socket(userSocketInfo.socketId).emit('challenged', {});
+                }
+
+            }
+
+
+
+        });
+
+        socket.on('challenge response', function (data) {});
+
+
+
     });
 }
