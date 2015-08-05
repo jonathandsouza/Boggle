@@ -48,10 +48,6 @@ module.exports = function (io) {
             this.socketInfo.forEach(function (el) {
 
                 if (el.socketId == socketId) {
-
-
-                    console.log('FOUND THE GUY WHO LEFT');
-                    console.log(el)
                     result = el;
                 }
             });
@@ -156,6 +152,11 @@ module.exports = function (io) {
             var userSocketInfo = objSocketManager.getUserNameBySocketId(socket.id);
 
             if (userSocketInfo && userSocketInfo.username) {
+
+
+                objSocketManager.removeSocket({
+                    username: userSocketInfo.username
+                });
 
                 io.emit('user left', {
                     username: userSocketInfo.username
