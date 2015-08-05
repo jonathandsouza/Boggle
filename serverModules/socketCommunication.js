@@ -138,7 +138,7 @@ module.exports = function (io) {
 
 
     var objSocketManager = new socketManager();
-    var gameManager = new require('./gameModule')();
+    var gameManager =  require('./gameModule')();
 
 
     io.on('connection', function (socket) {
