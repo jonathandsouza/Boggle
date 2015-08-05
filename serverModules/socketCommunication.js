@@ -112,8 +112,29 @@ module.exports = function (io) {
 
             });
 
-            console.log('active user ')
+
             return tmpUsr;
+        };
+
+        this.userExists = function (username) {
+
+
+            var result = false;
+
+            this.socketInfo.forEach(function (el) {
+
+
+                if (el.username == username) {
+
+
+                    result = true;
+
+                }
+
+            });
+
+
+            return result;
         };
 
 
@@ -148,19 +169,43 @@ module.exports = function (io) {
             console.log('identity');
             console.log(data);
             if (data && data.username && socket.id) {
-                objSocketManager.storeSocketInfo({
-                    username: data.username,
-                    socketId: socket.id
-                });
+
+                console.log('USER EXISTS');
+                console.log(objSocketManager.userExists(data.username));
+
+                if (objSocketManager.userExists(data.username)) {
+
+                    var response = {
+                        authentication: false
+                    }
+
+                    socket.emit('Identified', response);
+
+                } else {
+                    objSocketManager.storeSocketInfo({
+                        username: data.username,
+                        socketId: socket.id
+                    });
+
+
+                    console.log(objSocketManager.socketInfo);
+
+                    socket.broadcast.emit('user joined', {
+                        username: data.username
+                    });
+
+
+
+                    var response = {
+                        authentication: true
+                    }
+
+                    console.log('socketID')
+                    console.log(socket.id)
+                    socket.emit('Identified', response);
+
+                }
             }
-
-            console.log(objSocketManager.socketInfo);
-
-            socket.broadcast.emit('user joined', {
-                username: data.username
-            });
-
-
 
         });
 
