@@ -43,13 +43,20 @@ module.exports = function (io) {
 
         this.getUserNameBySocketId = function (socketId) {
 
+            var result;
 
             this.socketInfo.forEach(function (el) {
 
-                if (el.socketId == socketId)
-                    return el;
+                if (el.socketId == socketId) {
 
+
+                    console.log('FOUND THE GUY WHO LEFT');
+                    console.log(el)
+                    result = el;
+                }
             });
+
+            return result;
 
         };
 
