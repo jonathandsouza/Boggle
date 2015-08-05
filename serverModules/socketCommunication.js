@@ -118,22 +118,15 @@ module.exports = function (io) {
 
         this.userExists = function (username) {
 
-
             var result = false;
 
             this.socketInfo.forEach(function (el) {
 
-
                 if (el.username == username) {
-
-
                     result = true;
-
                 }
 
             });
-
-
             return result;
         };
 
@@ -170,8 +163,8 @@ module.exports = function (io) {
             console.log(data);
             if (data && data.username && socket.id) {
 
-                console.log('USER EXISTS');
-                console.log(objSocketManager.userExists(data.username));
+
+
 
                 if (objSocketManager.userExists(data.username)) {
 
