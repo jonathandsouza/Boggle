@@ -1,4 +1,4 @@
-module.exports = function(io) {
+module.exports = function (io) {
     'use strict';
 
     //        io.on('connection', function (socket) {
@@ -41,10 +41,10 @@ module.exports = function(io) {
         this.socketInfo = [];
         this.activeSocktes = 0;
 
-        this.getUserNameBySocketId = function(socketId) {
+        this.getUserNameBySocketId = function (socketId) {
 
 
-            this.socketInfo.forEach(function(el) {
+            this.socketInfo.forEach(function (el) {
 
                 if (el.socketId == socketId)
                     return el;
@@ -53,9 +53,9 @@ module.exports = function(io) {
 
         };
 
-        this.getSocketIDByUserName = function(userName) {
+        this.getSocketIDByUserName = function (userName) {
 
-            this.socketInfo.forEach(function(el) {
+            this.socketInfo.forEach(function (el) {
 
                 if (el.username == userName)
                     return el;
@@ -64,7 +64,7 @@ module.exports = function(io) {
         };
 
 
-        this.storeSocketInfo = function(data) {
+        this.storeSocketInfo = function (data) {
 
             if (data && data.username && data.socketId) {
 
@@ -76,12 +76,12 @@ module.exports = function(io) {
 
         };
 
-        this.removeSocket = function(data) {
+        this.removeSocket = function (data) {
 
             if (data.username) {
 
                 this.socketInfo = this.socketInfo
-                    .filter(function(el) {
+                    .filter(function (el) {
                         return el.username !== data.username;
                     });
 
@@ -90,7 +90,7 @@ module.exports = function(io) {
             if (data.socketId) {
 
                 this.socketInfo = this.socketInfo
-                    .filter(function(el) {
+                    .filter(function (el) {
                         return el.socketId !== data.socketId;
                     });
 
@@ -98,11 +98,11 @@ module.exports = function(io) {
 
         };
 
-        this.getUserList = function() {
+        this.getUserList = function () {
 
             var tmpUsr = [];
 
-            this.socketInfo.forEach(function(el) {
+            this.socketInfo.forEach(function (el) {
 
                 if (el.username) {
 
@@ -112,6 +112,7 @@ module.exports = function(io) {
 
             });
 
+            console.log('active user ')
             return tmpUsr;
         };
 
@@ -123,11 +124,11 @@ module.exports = function(io) {
     var gameManager = new require('./gameModule')();
 
 
-    io.on('connection', function(socket) {
+    io.on('connection', function (socket) {
 
         console.log('user connected on socket: ' + socket.id);
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', function () {
 
             console.log('user disconnected from socket :' + socket.id);
 
@@ -142,7 +143,7 @@ module.exports = function(io) {
 
         });
 
-        socket.on('identify', function(data) {
+        socket.on('identify', function (data) {
 
             console.log('identity');
             console.log(data);
@@ -163,15 +164,23 @@ module.exports = function(io) {
 
         });
 
-        socket.on('get active user list', function(data) {
-            socket.emit('active user list', objSocketManager.getUserList);
+        socket.on('get active user list', function (data) {
+
+            var response = {
+                activeUserList: objSocketManager.getUserList()
+            };
+
+            console.log('active user list')
+            console.log(response)
+
+            socket.emit('active user list', response);
         });
 
 
 
         //BOC GAME LOGIC
 
-        socket.on('challenge', function(data) {
+        socket.on('challenge', function (data) {
 
             if (data && data.challenger && data.challenged) {
 
@@ -202,7 +211,7 @@ module.exports = function(io) {
 
         });
 
-        socket.on('challenge response', function(data) {
+        socket.on('challenge response', function (data) {
 
             if (data && data.challengeID) {
 
@@ -227,8 +236,7 @@ module.exports = function(io) {
 
                     }
 
-                }
-                else {
+                } else {
 
 
                     var userSocketInfo = objSocketManager.getSocketIDByUserName(data.challenger);
@@ -258,7 +266,7 @@ module.exports = function(io) {
 
 
 
-        socket.on('evaluate challenge', function(data) {
+        socket.on('evaluate challenge', function (data) {
 
 
             if (data) {
