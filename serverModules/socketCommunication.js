@@ -172,7 +172,7 @@ module.exports = function (io) {
                         authentication: false
                     }
 
-                    socket.emit('Identified', response);
+                    socket.emit('identified', response);
 
                 } else {
                     objSocketManager.storeSocketInfo({
@@ -195,7 +195,7 @@ module.exports = function (io) {
 
                     console.log('socketID')
                     console.log(socket.id)
-                    socket.emit('Identified', response);
+                    socket.emit('identified', response);
 
                 }
             }
