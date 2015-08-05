@@ -96,7 +96,7 @@ module.exports = function (io) {
 
             }
 
-        }
+        };
 
         this.getUserList = function () {
 
@@ -113,7 +113,7 @@ module.exports = function (io) {
             });
 
             return tmpUsr;
-        }
+        };
 
 
     }
