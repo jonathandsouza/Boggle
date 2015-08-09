@@ -267,8 +267,7 @@ module.exports = function (io) {
 
                     var challenge = gameManager.getChallengeByChallengID(data.challengeID);
 
-                    var userSocketInfo = objSocketManager.getSocketIDByUserName(data.challenger);
-
+                    var userSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenger);
                     if (challenge && userSocketInfo) {
 
                         var response = {
@@ -279,7 +278,7 @@ module.exports = function (io) {
 
                         }
 
-                        io.sockets.socket(userSocketInfo.socketId).emit('challenge response', response);
+                    io.to(userSocketInfo.socketId).emit('challenge response', response);
 
                     }
 

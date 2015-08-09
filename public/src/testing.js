@@ -140,14 +140,26 @@ app.controller('TestingController', function ($scope) {
 
     $scope.acceptChallenge = function () {
 
+        response = {
 
-        socket.emit('challenge', function () {
+            challengeID: $scope.challengeData.challengeID,
+            challengeAccepted: true
 
+        };
 
-
-        });
+        socket.emit('challenge response', response);
 
 
     }
+
+
+    socket.on('challenge response', function (data) {
+
+
+        console.log('CHALLENGE RESULT ::::::::::::::::::::');
+        console.log(data);
+
+
+    });
 
 });
