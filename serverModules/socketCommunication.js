@@ -58,12 +58,16 @@ module.exports = function (io) {
 
         this.getSocketIDByUserName = function (userName) {
 
+            var result;
+
             this.socketInfo.forEach(function (el) {
 
                 if (el.username == userName)
-                    return el;
+                    result = el;
             });
 
+
+            return result;
         };
 
 
@@ -143,6 +147,7 @@ module.exports = function (io) {
 
     io.on('connection', function (socket) {
 
+        //BOC USER MANAGER LOGIC
         console.log('user connected on socket: ' + socket.id);
 
         socket.on('disconnect', function () {
@@ -167,8 +172,6 @@ module.exports = function (io) {
 
         socket.on('identify', function (data) {
 
-            console.log('identity');
-            console.log(data);
             if (data && data.username && socket.id) {
 
 
@@ -216,12 +219,10 @@ module.exports = function (io) {
                 activeUserList: objSocketManager.getUserList()
             };
 
-            console.log('active user list')
-            console.log(response)
-
             socket.emit('active user list', response);
         });
 
+        //EOC USER MANAGER LOGIC
 
 
         //BOC GAME LOGIC
@@ -247,7 +248,7 @@ module.exports = function (io) {
 
                         }
 
-                        io.sockets.socket(userSocketInfo.socketId).emit('challenged', response);
+                        io.to(userSocketInfo.socketId).emit('challenged', response);
                     }
                 }
 
@@ -295,7 +296,7 @@ module.exports = function (io) {
                             challengeAccepted: false,
                         }
 
-                        io.sockets.socket(userSocketInfo.socketId).emit('challenge response', response);
+                        io.to(userSocketInfo.socketId).emit('challenge response', response);
 
                     }
 
@@ -333,7 +334,7 @@ module.exports = function (io) {
 
                     }
 
-                    io.sockets.socket(userSocketInfo.socketId).emit('challenge result', response);
+                    io.to(userSocketInfo.socketId).emit('challenge result', response);
 
                 }
 

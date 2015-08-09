@@ -31,7 +31,10 @@ module.exports = function() {
 
         this.challengeID = 0;
         this.challenges = [];
-        this.createChallenge = function(challenger, challenged) {
+        this.createChallenge = function (challenger, challenged) {
+
+            console.log('createChallenge BOC');
+
 
             var newChallenge = new Challenge();
 
@@ -45,15 +48,22 @@ module.exports = function() {
 
             }
 
+            console.log('CREATE CHALLENGE RESULT ::::')
+            console.log(newChallenge);
+
+            return newChallenge;
+
+            console.log('createChallenge BOC');
+
         }
 
-        this.getChallengeByChallengID = function(challengeID) {
+        this.getChallengeByChallengID = function (challengeID) {
 
             if (challengeID && this.challengeID >= challengeID && this.challenges && this.challenges.length > 0) {
 
                 var result;
 
-                this.challenges.forEach(function(element) {
+                this.challenges.forEach(function (element) {
 
                     if (element && element.challengeID && challengeID == element.challengeID) {
 
@@ -72,7 +82,7 @@ module.exports = function() {
 
 
 
-        this.evaluateChallenge = function(username, challengeID, wordList) {
+        this.evaluateChallenge = function (username, challengeID, wordList) {
 
 
             var challenge = this.getChallengeByChallengID(challengeID);
@@ -94,8 +104,7 @@ module.exports = function() {
 
 
 
-                    }
-                    else {
+                    } else {
 
 
                         challenge.challengerResultSubmitted = true;
@@ -113,7 +122,7 @@ module.exports = function() {
 
 
 
-                 if (challenge.challenged == username) {
+                if (challenge.challenged == username) {
 
                     if (this.chllengerResultSubmitted == true) {
 
@@ -127,8 +136,7 @@ module.exports = function() {
 
 
 
-                    }
-                    else {
+                    } else {
 
 
                         challenge.challengedResultSubmitted = true;
@@ -152,11 +160,6 @@ module.exports = function() {
     }
 
 
-return new gameManager();
+    return new gameManager();
 
 }
-
-
-
-
- 
