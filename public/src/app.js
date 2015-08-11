@@ -12,8 +12,12 @@
                  templateUrl: 'partials/main.html',
                  controller: 'AppWinController'
              })
+             .when('/testing', {
+                 templateUrl: 'partials/testing.html',
+                 controller: 'TestingController'
+             })
              .otherwise({
-                 redirectTo: '/login'
+                 redirectTo: '/testing'
              });
 
 

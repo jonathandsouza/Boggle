@@ -1,4 +1,4 @@
-module.exports = function (io) {
+module.exports = function(io) {
     'use strict';
 
     //        io.on('connection', function (socket) {
@@ -41,11 +41,11 @@ module.exports = function (io) {
         this.socketInfo = [];
         this.activeSocktes = 0;
 
-        this.getUserNameBySocketId = function (socketId) {
+        this.getUserNameBySocketId = function(socketId) {
 
             var result;
 
-            this.socketInfo.forEach(function (el) {
+            this.socketInfo.forEach(function(el) {
 
                 if (el.socketId == socketId) {
                     result = el;
@@ -56,18 +56,22 @@ module.exports = function (io) {
 
         };
 
-        this.getSocketIDByUserName = function (userName) {
+        this.getSocketIDByUserName = function(userName) {
 
-            this.socketInfo.forEach(function (el) {
+            var result;
+
+            this.socketInfo.forEach(function(el) {
 
                 if (el.username == userName)
-                    return el;
+                    result = el;
             });
 
+
+            return result;
         };
 
 
-        this.storeSocketInfo = function (data) {
+        this.storeSocketInfo = function(data) {
 
             if (data && data.username && data.socketId) {
 
@@ -79,12 +83,12 @@ module.exports = function (io) {
 
         };
 
-        this.removeSocket = function (data) {
+        this.removeSocket = function(data) {
 
             if (data.username) {
 
                 this.socketInfo = this.socketInfo
-                    .filter(function (el) {
+                    .filter(function(el) {
                         return el.username !== data.username;
                     });
 
@@ -93,7 +97,7 @@ module.exports = function (io) {
             if (data.socketId) {
 
                 this.socketInfo = this.socketInfo
-                    .filter(function (el) {
+                    .filter(function(el) {
                         return el.socketId !== data.socketId;
                     });
 
@@ -101,11 +105,11 @@ module.exports = function (io) {
 
         };
 
-        this.getUserList = function () {
+        this.getUserList = function() {
 
             var tmpUsr = [];
 
-            this.socketInfo.forEach(function (el) {
+            this.socketInfo.forEach(function(el) {
 
                 if (el.username) {
 
@@ -119,11 +123,11 @@ module.exports = function (io) {
             return tmpUsr;
         };
 
-        this.userExists = function (username) {
+        this.userExists = function(username) {
 
             var result = false;
 
-            this.socketInfo.forEach(function (el) {
+            this.socketInfo.forEach(function(el) {
 
                 if (el.username == username) {
                     result = true;
@@ -138,14 +142,15 @@ module.exports = function (io) {
 
 
     var objSocketManager = new socketManager();
-    var gameManager =  require('./gameModule')();
+    var gameManager = require('./gameModule')();
 
 
-    io.on('connection', function (socket) {
+    io.on('connection', function(socket) {
 
+        //BOC USER MANAGER LOGIC
         console.log('user connected on socket: ' + socket.id);
 
-        socket.on('disconnect', function () {
+        socket.on('disconnect', function() {
 
             console.log('user disconnected from socket :' + socket.id);
 
@@ -165,10 +170,8 @@ module.exports = function (io) {
 
         });
 
-        socket.on('identify', function (data) {
+        socket.on('identify', function(data) {
 
-            console.log('identity');
-            console.log(data);
             if (data && data.username && socket.id) {
 
 
@@ -182,7 +185,8 @@ module.exports = function (io) {
 
                     socket.emit('identified', response);
 
-                } else {
+                }
+                else {
                     objSocketManager.storeSocketInfo({
                         username: data.username,
                         socketId: socket.id
@@ -210,23 +214,21 @@ module.exports = function (io) {
 
         });
 
-        socket.on('get active user list', function (data) {
+        socket.on('get active user list', function(data) {
 
             var response = {
                 activeUserList: objSocketManager.getUserList()
             };
 
-            console.log('active user list')
-            console.log(response)
-
             socket.emit('active user list', response);
         });
 
+        //EOC USER MANAGER LOGIC
 
 
         //BOC GAME LOGIC
 
-        socket.on('challenge', function (data) {
+        socket.on('challenge', function(data) {
 
             if (data && data.challenger && data.challenged) {
 
@@ -241,13 +243,12 @@ module.exports = function (io) {
                         var response = {
 
                             challengeID: challenge.challengeID,
-                            challenger: data.challenger,
-                            gameData: challenge.gameData
+                            challenger: data.challenger
 
 
                         }
 
-                        io.sockets.socket(userSocketInfo.socketId).emit('challenged', response);
+                        io.to(userSocketInfo.socketId).emit('challenged', response);
                     }
                 }
 
@@ -257,51 +258,36 @@ module.exports = function (io) {
 
         });
 
-        socket.on('challenge response', function (data) {
+        socket.on('challenge response', function(data) {
 
             if (data && data.challengeID) {
 
 
-                if (data.challengeAccepted == true) {
+                 {
 
                     var challenge = gameManager.getChallengeByChallengID(data.challengeID);
 
-                    var userSocketInfo = objSocketManager.getSocketIDByUserName(data.challenger);
+                    var userSocketInfoChallenger = objSocketManager.getSocketIDByUserName(challenge.challenger);
+                    var userSocketInfoChallenged = objSocketManager.getSocketIDByUserName(challenge.challenged);
 
-                    if (challenge && userSocketInfo) {
-
-                        var response = {
-
-                            challengeID: challenge.challengeID,
-                            challengeAccepted: true,
-                            gameData: challenge.gameData
-
-                        }
-
-                        io.sockets.socket(userSocketInfo.socketId).emit('challenge response', response);
-
-                    }
-
-                } else {
-
-
-                    var userSocketInfo = objSocketManager.getSocketIDByUserName(data.challenger);
-
-                    if (challenge && userSocketInfo) {
+                    if (challenge && userSocketInfoChallenger && userSocketInfoChallenged) {
 
                         var response = {
 
                             challengeID: challenge.challengeID,
-                            challengeAccepted: false,
+                            challengeAccepted: data.challengeAccepted,
+                            gameData: (data.challengeAccepted == true ? challenge.gameData : {})
+
                         }
 
-                        io.sockets.socket(userSocketInfo.socketId).emit('challenge response', response);
+                        io.to(userSocketInfoChallenger.socketId).emit('challenge response', response);
+
+                        if (data.challengeAccepted)
+                            io.to(userSocketInfoChallenged.socketId).emit('challenge response', response);
 
                     }
-
 
                 }
-
 
 
             }
@@ -312,7 +298,7 @@ module.exports = function (io) {
 
 
 
-        socket.on('evaluate challenge', function (data) {
+        socket.on('evaluate challenge', function(data) {
 
 
             if (data) {
@@ -333,7 +319,7 @@ module.exports = function (io) {
 
                     }
 
-                    io.sockets.socket(userSocketInfo.socketId).emit('challenge result', response);
+                    io.to(userSocketInfo.socketId).emit('challenge result', response);
 
                 }
 
