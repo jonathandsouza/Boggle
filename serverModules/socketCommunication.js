@@ -263,7 +263,7 @@ module.exports = function(io) {
             if (data && data.challengeID) {
 
 
-                 {
+                {
 
                     var challenge = gameManager.getChallengeByChallengID(data.challengeID);
 
@@ -298,36 +298,145 @@ module.exports = function(io) {
 
 
 
-        socket.on('evaluate challenge', function(data) {
+         socket.on("evaluate challenge", function (data) {
 
 
-            if (data) {
+
+            if (data.challengeID && data.username && data.wordList) {
+
+
 
                 var challenge = gameManager.getChallengeByChallengID(data.challengeID);
 
-                var userSocketInfo = objSocketManager.getSocketIDByUserName(data.challenger);
+
+                if (challenge) {
 
 
-                if (challenge && userSocketInfo) {
+                    if (challenge.challenger == data.username) {
 
-                    var gameResult = gameManager.evaluateChallenge(data.username, data.challengeID, data.wordList);
 
-                    var response = {
 
-                        status: gameResult.status,
-                        opponentWordList: gameResult.opponentWordList
+                        challenge.challengedWordList = data.wordList;
+                        challenge.chllengedResultSubmitted = true;
+
+
+                    } else {
+
+                        challenge.challengerWordList = data.wordList;
+                        challenge.challengerResultSubmitted = true;
 
                     }
 
-                    io.to(userSocketInfo.socketId).emit('challenge result', response);
+
+                    if (challenge.challengerResultSubmitted == true && challenge.chllengedResultSubmitted == true) {
+
+
+                        var challengerSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenger);
+                        var challengedSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenged);
+
+
+                        var gameResult = gameManager.evaluateChallenge(challenge);
+
+
+                        var challengerResponse = {
+
+                            challengeID: challenge.challengeID,
+                            status: gameResult == "DRAW" ? "DRAW" : (challenge.challenger == gameResult ? "WON" : "LOSE"),
+                            score: 0
+
+                        }
+
+
+                        var challengedResponse = {
+
+                            challengeID: challenge.challengeID,
+                            status: gameResult == "DRAW" ? "DRAW" : (challenge.challenged == gameResult ? "WON" : "LOSE"),
+                            score: 0
+
+                        }
+
+
+                        io.to(challengerSocketInfo.socketId).emit("challenge result", challengerResponse);
+
+                        io.to(challengedSocketInfo.socketId).emit("challenge result", challengedResponse);
+
+                    }
+
 
                 }
-
-
-
             }
 
-        });
+        })
+
+
+
+
+        //BOC PRE SWAP EVENT
+
+        socket.on("swap word list", function(data) {
+
+            if (data && data.challengeID && data.username && data.wordList) {
+
+                var challenge = gameManager.getChallengeByChallengID(data.challengeID);
+
+
+                if (challenge) {
+
+
+                    if (challenge.challenger == data.username) {
+
+                        challenge.challengerWordListPre = data.wordList;
+                        challenge.challengerResultSubmittedPre = true;
+
+
+                    }
+                    else {
+
+                        challenge.challengedWordListPre = data.wordList;
+                        challenge.chllengedResultSubmittedPre = true;
+
+                    }
+
+
+                    if (challenge.challengerResultSubmittedPre == true && challenge.chllengedResultSubmittedPre == true) {
+
+
+                        var challengerSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenger);
+                        var challengedSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenged);
+
+
+
+                        var challengerResponse = {
+
+                            challengeID: challenge.challengeID,
+                            wordList: challenge.challengedWordListPre
+                        }
+
+
+                        var challengedResponse = {
+
+                            challengeID: challenge.challengeID,
+                            wordList: challenge.challengerWordListPre
+                        }
+
+
+                        io.to(challengerSocketInfo.socketId).emit("swap word list", challengerResponse);
+
+                        io.to(challengedSocketInfo.socketId).emit("swap word list", challengedResponse);
+
+                    }
+
+
+                }
+            }
+
+
+
+
+        })
+
+
+        //EOC PRE SWAP EVENT
 
 
 

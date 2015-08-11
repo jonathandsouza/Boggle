@@ -19,6 +19,17 @@ module.exports = function() {
         this.challengedWordList = [];
         this.chllengedResultSubmitted = false;
 
+
+        this.challengerWordListPre = [];
+        this.challengerResultSubmittedPre = false;
+
+
+        this.challengedWordListPre = [];
+        this.chllengedResultSubmittedPre = false;
+
+
+
+
         this.gameData = {
 
             boggleBoard: []
@@ -31,7 +42,7 @@ module.exports = function() {
 
         this.challengeID = 0;
         this.challenges = [];
-        this.createChallenge = function (challenger, challenged) {
+        this.createChallenge = function(challenger, challenged) {
 
             console.log('createChallenge BOC');
 
@@ -57,13 +68,13 @@ module.exports = function() {
 
         }
 
-        this.getChallengeByChallengID = function (challengeID) {
+        this.getChallengeByChallengID = function(challengeID) {
 
             if (challengeID && this.challengeID >= challengeID && this.challenges && this.challenges.length > 0) {
 
                 var result;
 
-                this.challenges.forEach(function (element) {
+                this.challenges.forEach(function(element) {
 
                     if (element && element.challengeID && challengeID == element.challengeID) {
 
@@ -81,81 +92,37 @@ module.exports = function() {
         }
 
 
+        this.evaluateChallenge = function(challenge) {
 
-        this.evaluateChallenge = function (username, challengeID, wordList) {
-
-
-            var challenge = this.getChallengeByChallengID(challengeID);
-
-            if (challengeID && wordList && challenge && username) {
+            if (challenge) {
 
 
-                if (challenge.challenger == username) {
+                if (challenge.challengerWordList.length > challenge.challengerWordList.length) {
 
-                    if (this.chllengedResultSubmitted == true) {
+                    return challenge.challenger;
 
+                }
 
+                if (challenge.challengerWordList.length < challenge.challengerWordList.length) {
 
-                        return {
-
-                            status: gameLogic.evaluate(challenge.boggleBoard, wordList, challenge.challengedWordList),
-                            opponentWordList: challenge.challengedWordList
-                        }
-
-
-
-                    } else {
-
-
-                        challenge.challengerResultSubmitted = true;
-                        challenge.challengerWordList = wordList;
-
-
-                        return {
-                            status: "unknown",
-                            opponentWordList: []
-                        }
-
-                    }
+                    return challenge.challenged;
 
                 }
 
 
-
-                if (challenge.challenged == username) {
-
-                    if (this.chllengerResultSubmitted == true) {
+                if (challenge.challengerWordList.length == challenge.challengerWordList.length) {
 
 
-
-                        return {
-
-                            status: gameLogic.evaluate(challenge.boggleBoard, wordList, challenge.challengerWordList),
-                            opponentWordList: challenge.challengerWordList
-                        }
-
-
-
-                    } else {
-
-
-                        challenge.challengedResultSubmitted = true;
-                        challenge.challengedWordList = wordList;
-
-
-                        return {
-                            status: "unknown",
-                            opponentWordList: []
-                        }
-
-                    }
+                    return "DRAW";
 
                 }
-
 
             }
 
+
         }
+
+
 
     }
 
