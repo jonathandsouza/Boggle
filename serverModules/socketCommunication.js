@@ -402,6 +402,8 @@ module.exports = function(io) {
                         var challengerSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenger);
                         var challengedSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenged);
 
+                        
+                        gameManager.removeDuplicateWordsFromWordLis(challenge);
 
 
                         var challengerResponse = {

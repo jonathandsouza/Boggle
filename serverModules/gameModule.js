@@ -94,6 +94,35 @@ module.exports = function() {
 
         }
 
+        this.removeDuplicateWordsFromWordLis = function(challenge)
+        {
+            if(challenge && challenge.challengedWordListPre && challenge.challengerWordListPre){
+                
+                var remWords =[];
+                
+                challenge.challengerWordListPre.forEach(function(word){
+                    
+                    var index = challenge.challengedWordListPre.indexOf(word)
+                    
+                    if(index >=0)
+                      {
+                           remWords.push(word);
+                           challenge.challengedWordListPre.splice(index,1);
+                          
+                      }
+                    
+                });
+                
+                remWords.forEach(function(word){
+                    
+                    challenge.challengerWordListPre.splice(challenge.challengerWordListPre.indexOf(word),1);
+                })
+                
+                
+                
+            }
+            
+        }
 
         this.evaluateChallenge = function(challenge) {
 
