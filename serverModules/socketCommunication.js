@@ -60,7 +60,11 @@ module.exports = function(io) {
 
             var result;
 
+<<<<<<< HEAD
             this.socketInfo.forEach(function(el) {
+=======
+            this.socketInfo.forEach(function (el) {
+>>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
 
                 if (el.username == userName)
                     result = el;
@@ -267,10 +271,15 @@ module.exports = function(io) {
 
                     var challenge = gameManager.getChallengeByChallengID(data.challengeID);
 
+<<<<<<< HEAD
                     var userSocketInfoChallenger = objSocketManager.getSocketIDByUserName(challenge.challenger);
                     var userSocketInfoChallenged = objSocketManager.getSocketIDByUserName(challenge.challenged);
 
                     if (challenge && userSocketInfoChallenger && userSocketInfoChallenged) {
+=======
+                    var userSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenger);
+                    if (challenge && userSocketInfo) {
+>>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
 
                         var response = {
 
@@ -280,10 +289,14 @@ module.exports = function(io) {
 
                         }
 
+<<<<<<< HEAD
                         io.to(userSocketInfoChallenger.socketId).emit('challenge response', response);
 
                         if (data.challengeAccepted)
                             io.to(userSocketInfoChallenged.socketId).emit('challenge response', response);
+=======
+                    io.to(userSocketInfo.socketId).emit('challenge response', response);
+>>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
 
                     }
 
@@ -346,6 +359,7 @@ module.exports = function(io) {
 
                         }
 
+<<<<<<< HEAD
 
                         var challengedResponse = {
 
@@ -359,6 +373,9 @@ module.exports = function(io) {
                         io.to(challengerSocketInfo.socketId).emit("challenge result", challengerResponse);
 
                         io.to(challengedSocketInfo.socketId).emit("challenge result", challengedResponse);
+=======
+                        io.to(userSocketInfo.socketId).emit('challenge response', response);
+>>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
 
                     }
 
@@ -426,6 +443,10 @@ module.exports = function(io) {
 
                     }
 
+<<<<<<< HEAD
+=======
+                    io.to(userSocketInfo.socketId).emit('challenge result', response);
+>>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
 
                 }
             }
