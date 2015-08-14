@@ -61,6 +61,7 @@ module.exports = function() {
         this.BoggleBoard = function() {
             var M = 4;
             var N = 4;
+            var board =  [];
 
             //StdRandom.shuffle(BOGGLE_1992); //<-------------PROBLEM HERE  chance.pick(BOGGLE_1992);
 
@@ -69,7 +70,7 @@ module.exports = function() {
 
                     //var letters = this.BOGGLE_1992[N * i + j];
 
-                    var letters = chance.pick(this.BOGGLE_1992[N * i + j]);
+                    var letters = chance.pick(this.BOGGLE_1992);
 
                     //var r = StdRandom.uniform(letters.length()); //<-------PROBLEM HERE
 
@@ -84,9 +85,11 @@ module.exports = function() {
                     });
 
 
-                    this.board[i][j] = letters.charAt(r);
+                    board.push(letters.charAt(r));
                 }
             }
+            
+            return board
         }
 
 
