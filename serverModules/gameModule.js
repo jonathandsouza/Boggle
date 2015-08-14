@@ -129,14 +129,12 @@ module.exports = function() {
 
         }
 
-<<<<<<< HEAD
-
 
     }
 
 
-=======
->>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
+
+
     return new gameManager();
 
 }
