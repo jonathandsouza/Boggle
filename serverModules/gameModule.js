@@ -97,36 +97,12 @@ module.exports = function() {
 
         this.evaluateChallenge = function(challenge) {
 
-<<<<<<< HEAD
+ 
             if (challenge) {
 
 
                 if (challenge.challengerWordList.length > challenge.challengerWordList.length) {
-=======
-        this.evaluateChallenge = function (username, challengeID, wordList) {
-
-
-            var challenge = this.getChallengeByChallengID(challengeID);
-
-            if (challengeID && wordList && challenge && username) {
-
-
-                if (challenge.challenger == username) {
-
-                    if (this.chllengedResultSubmitted == true) {
-
-
-
-                        return {
-
-                            status: gameLogic.evaluate(challenge.boggleBoard, wordList, challenge.challengedWordList),
-                            opponentWordList: challenge.challengedWordList
-                        }
-
-
-
-                    } else {
->>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
+ 
 
                     return challenge.challenger;
 
@@ -136,26 +112,9 @@ module.exports = function() {
 
                     return challenge.challenged;
 
-<<<<<<< HEAD
+ 
                 }
-=======
-                if (challenge.challenged == username) {
-
-                    if (this.chllengerResultSubmitted == true) {
-
-
-
-                        return {
-
-                            status: gameLogic.evaluate(challenge.boggleBoard, wordList, challenge.challengerWordList),
-                            opponentWordList: challenge.challengerWordList
-                        }
-
-
-
-                    } else {
-
->>>>>>> 98b1327c4507259688cd98e0735d707b62ac53f1
+ 
 
 
                 if (challenge.challengerWordList.length == challenge.challengerWordList.length) {
