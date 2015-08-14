@@ -180,7 +180,7 @@ app.controller('TestingController', function ($scope) {
         console.log("evaluate challenge REQUEST");
         console.log(response);
 
-        socket.emit('evaluate challenge', response);
+        socket.emit('swap word list', response);
 
     }
 
