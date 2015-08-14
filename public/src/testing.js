@@ -10,8 +10,8 @@ app.controller('TestingController', function ($scope) {
 
     $scope.selectedUser = '';
 
-    //    socket = io.connect("https://boggle-jonathandsouza.c9.io");
-    socket = io.connect();
+    socket = io.connect("https://boggle-jonathandsouza.c9.io");
+    //    socket = io.connect();
 
     socket.on('identified', function (data) {
 
@@ -119,7 +119,7 @@ app.controller('TestingController', function ($scope) {
 
     $scope.challengedArrived = false;
 
-    $scope.challengeData;
+    var challengeData = {};
 
 
     socket.on('challenged', function (data) {
@@ -130,7 +130,9 @@ app.controller('TestingController', function ($scope) {
 
         $scope.challengedArrived = true;
 
-        $scope.challengeData = data;
+
+
+        challengeData = data;
 
         $scope.$apply();
 
@@ -138,12 +140,12 @@ app.controller('TestingController', function ($scope) {
 
 
 
-    $scope.acceptChallenge = function () {
+    $scope.acceptChallenge = function (accpeted) {
 
         response = {
 
-            challengeID: $scope.challengeData.challengeID,
-            challengeAccepted: true
+            challengeID: challengeData.challengeID,
+            challengeAccepted: accpeted
 
         };
 
@@ -156,10 +158,41 @@ app.controller('TestingController', function ($scope) {
     socket.on('challenge response', function (data) {
 
 
-        console.log('CHALLENGE RESULT ::::::::::::::::::::');
+        challengeData = data;
         console.log(data);
 
 
     });
+
+
+
+    $scope.swapWordList = function () {
+
+
+        response = {
+
+            challengeID: challengeData.challengeID,
+            wordList: ["abc", "def", "ghi"],
+            username: $scope.user
+
+        };
+
+        console.log("evaluate challenge REQUEST");
+        console.log(response);
+
+        socket.emit('evaluate challenge', response);
+
+    }
+
+
+
+    socket.on('challenge result', function (data) {
+
+        console.log('evaluate challenge  RESPONSE:::::::');
+        console.log(data)
+    });
+
+
+
 
 });

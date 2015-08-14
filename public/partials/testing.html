@@ -13,6 +13,8 @@
     selected User : {{selectedUser}}
     <p>
         <button ng-click="challenge()">CHALLENGE</button>
+        <button ng-click="swapWordList()">SUBMIT CHALLENGE</button>
+
     </p>
 
 </p>
@@ -35,8 +37,8 @@
 <div ng-show='challengedArrived'>
     <p>
 
-        <button ng-click='acceptChallenge()'>ACCEPT</button>
-        <button>REJECT</button>
+        <button ng-click='acceptChallenge(true)'>ACCEPT</button>
+        <button ng-click='acceptChallenge(false)'>REJECT</button>
     </p>
 
 </div>
