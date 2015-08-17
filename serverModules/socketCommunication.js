@@ -403,7 +403,7 @@ module.exports = function(io) {
                         var challengedSocketInfo = objSocketManager.getSocketIDByUserName(challenge.challenged);
 
                         
-                        gameManager.removeDuplicateWordsFromWordLis(challenge);
+                        //gameManager.removeDuplicateWordsFromWordList(challenge);
 
 
                         var challengerResponse = {

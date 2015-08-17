@@ -67,8 +67,6 @@ module.exports = function() {
 
             return newChallenge;
 
-            console.log('createChallenge BOC');
-
         }
 
         this.getChallengeByChallengID = function (challengeID) {
@@ -94,33 +92,35 @@ module.exports = function() {
 
         }
 
-        this.removeDuplicateWordsFromWordLis = function(challenge)
+    this.removeDuplicateWordsFromWordList = function(challenge)
         {
-            if(challenge && challenge.challengedWordListPre && challenge.challengerWordListPre){
+            // if(challenge && challenge.challengedWordListPre && challenge.challengerWordListPre && challenge.challengedWordListPre.length>0 && challenge.challengerWordListPre.length>0 ){
                 
-                var remWords =[];
+            //     var remWords =[];
                 
-                challenge.challengerWordListPre.forEach(function(word){
+            //     console.log('Challenge before::::'); console.log(challenge);
+                
+            //      for(var i =0 ;i< challenge.challengerWordListPre.length; i++)
+            //       { 
+            //           var index = challenge.challengedWordListPre.indexOf(challenge.challengerWordListPre[i]);
                     
-                    var index = challenge.challengedWordListPre.indexOf(word)
-                    
-                    if(index >=0)
-                      {
-                           remWords.push(word);
-                           challenge.challengedWordListPre.splice(index,1);
+            //         if(index >=0)
+            //           {
+            //               remWords.push(challenge.challengerWordListPre[i]);
+            //               challenge.challengedWordListPre.splice(index,1);
                           
-                      }
+            //           }
                     
-                });
+            //       }
                 
-                remWords.forEach(function(word){
-                    
-                    challenge.challengerWordListPre.splice(challenge.challengerWordListPre.indexOf(word),1);
-                })
+                 
+            //         for(var j=0 ;j< remWords.length; j++)
+            //                   challenge.challengerWordListPre.splice(challenge.challengerWordListPre.indexOf(remWords[j]),1);
+               
                 
+            //     console.log('Challenge after::::'); console.log(challenge);
                 
-                
-            }
+            // }
             
         }
 
@@ -130,23 +130,22 @@ module.exports = function() {
             if (challenge) {
 
 
-                if (challenge.challengerWordList.length > challenge.challengerWordList.length) {
+                if (challenge.challengerWordList.length > challenge.challengedWordList.length) {
  
 
                     return challenge.challenger;
 
                 }
 
-                if (challenge.challengerWordList.length < challenge.challengerWordList.length) {
+                if (challenge.challengerWordList.length < challenge.challengedWordList.length) {
 
                     return challenge.challenged;
 
- 
                 }
  
 
 
-                if (challenge.challengerWordList.length == challenge.challengerWordList.length) {
+                if (challenge.challengerWordList.length == challenge.challengedWordList.length) {
 
 
                     return "DRAW";
