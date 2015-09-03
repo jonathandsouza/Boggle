@@ -94,33 +94,35 @@ module.exports = function() {
 
     this.removeDuplicateWordsFromWordList = function(challenge)
         {
-            // if(challenge && challenge.challengedWordListPre && challenge.challengerWordListPre && challenge.challengedWordListPre.length>0 && challenge.challengerWordListPre.length>0 ){
+            if(challenge && challenge.challengedWordListPre && challenge.challengerWordListPre && challenge.challengedWordListPre.length>0 && challenge.challengerWordListPre.length>0 ){
                 
-            //     var remWords =[];
+                var remWords =[];
                 
-            //     console.log('Challenge before::::'); console.log(challenge);
                 
-            //      for(var i =0 ;i< challenge.challengerWordListPre.length; i++)
-            //       { 
-            //           var index = challenge.challengedWordListPre.indexOf(challenge.challengerWordListPre[i]);
+                
+                
+                
+                 for(var i =0 ;i< challenge.challengerWordListPre.length; i++)
+                  { 
+                      var index = challenge.challengedWordListPre.indexOf(challenge.challengerWordListPre[i]);
                     
-            //         if(index >=0)
-            //           {
-            //               remWords.push(challenge.challengerWordListPre[i]);
-            //               challenge.challengedWordListPre.splice(index,1);
+                    if(index >=0)
+                      {
+                          remWords.push(challenge.challengerWordListPre[i]);
+                          challenge.challengedWordListPre.splice(index,1);
                           
-            //           }
+                      }
                     
-            //       }
+                  }
                 
                  
-            //         for(var j=0 ;j< remWords.length; j++)
-            //                   challenge.challengerWordListPre.splice(challenge.challengerWordListPre.indexOf(remWords[j]),1);
+                    for(var j=0 ;j< remWords.length; j++)
+                              challenge.challengerWordListPre.splice(challenge.challengerWordListPre.indexOf(remWords[j]),1);
                
                 
-            //     console.log('Challenge after::::'); console.log(challenge);
+               
                 
-            // }
+            }
             
         }
 
